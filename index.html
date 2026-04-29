@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Streichholzboxen – Terme entdecken</title>
+  <title>Knack die Box – Terme entdecken</title>
+
   <style>
     :root {
       --bg: #f7f2e8;
@@ -13,6 +14,7 @@
       --green: #3c8d57;
       --red: #d62828;
       --line: #d8c7aa;
+      --selected: #f7b731;
     }
 
     * { box-sizing: border-box; }
@@ -24,6 +26,9 @@
       color: var(--ink);
       min-height: 100vh;
       padding: 24px;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
     }
 
     h1 {
@@ -57,10 +62,6 @@
       justify-content: center;
     }
 
-    .task-switcher button {
-      min-width: 120px;
-    }
-
     button {
       border: none;
       border-radius: 12px;
@@ -74,6 +75,29 @@
     }
 
     button:hover { filter: brightness(1.08); }
+    button:active { transform: scale(0.97); }
+
+    .question-box {
+      background: white;
+      border: 2px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      box-shadow: 0 8px 20px rgba(0,0,0,.06);
+    }
+
+    #questionText { white-space: pre-line; }
+
+    .solution {
+      margin-top: 10px;
+      font-size: 20px;
+      color: var(--green);
+      display: none;
+    }
+
+    .solution.visible { display: block; }
 
     .equation-wrap {
       display: grid;
@@ -90,12 +114,12 @@
       padding: 16px;
       box-shadow: inset 0 0 0 4px rgba(255,255,255,.5), 0 8px 20px rgba(0,0,0,.08);
       position: relative;
+      cursor: pointer;
     }
 
-    .side h2 {
-      margin: 0 0 12px;
-      text-align: center;
-      font-size: 24px;
+    .side.return-target {
+      outline: 5px solid var(--selected);
+      outline-offset: 4px;
     }
 
     .value-info {
@@ -115,11 +139,6 @@
       flex-wrap: wrap;
       align-content: flex-start;
       background: rgba(255,255,255,.45);
-    }
-
-    .items.drag-over {
-      background: #f4ead8;
-      border-color: var(--accent);
     }
 
     .equals {
@@ -157,20 +176,43 @@
       width: 20px;
       height: 100px;
       background: url("match.png") center/contain no-repeat;
-      cursor: grab;
+      cursor: pointer;
       margin: 4px;
+      transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
     .box {
       width: 150px;
       height: 100px;
       background: url("box.png") center/contain no-repeat;
-      cursor: grab;
-      position: relative;
+      cursor: pointer;
       margin: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .match:active,
+    .box:active {
+      transform: scale(0.94);
+    }
+
+    .pop-out {
+      animation: popOut 0.22s ease forwards;
+    }
+
+    @keyframes popOut {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.18); opacity: 0.85; }
+      100% { transform: scale(0.2); opacity: 0; }
+    }
+
+    .pop-in {
+      animation: popIn 0.25s ease;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.2); opacity: 0; }
+      70% { transform: scale(1.14); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     .trash {
@@ -178,20 +220,24 @@
       border: 3px dashed #b6a58e;
       border-radius: 18px;
       padding: 18px;
-      min-height: 150px;
+      min-height: 155px;
       text-align: center;
       font-weight: bold;
       font-size: 18px;
       color: #756653;
+      box-shadow: 0 8px 20px rgba(0,0,0,.06);
     }
 
     .trash-title { margin-bottom: 4px; }
 
-    .trash.drag-over {
-      border-color: var(--red);
-      background: #fff1f1;
-      color: var(--red);
+    .return-hint {
+      margin-top: 8px;
+      color: var(--accent);
+      font-size: 16px;
+      display: none;
     }
+
+    .return-hint.visible { display: block; }
 
     .removed-items {
       margin-top: 14px;
@@ -204,38 +250,47 @@
       justify-content: center;
       align-items: flex-start;
     }
-.question-box {
-      background: white;
-      border: 2px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
+
+    .removed-items .selected {
+      outline: 5px solid var(--selected);
+      outline-offset: 5px;
+      border-radius: 12px;
+      transform: scale(1.05);
     }
-
-    #questionText { white-space: pre-line; }
-
-    .solution {
-      margin-top: 10px;
-      font-size: 20px;
-      color: var(--green);
-      display: none;
-    }
-
-    .solution.visible { display: block; }
 
     @media (max-width: 850px) {
       body { padding: 12px; }
-      .equation-wrap { grid-template-columns: 1fr; }
-      .equals { min-height: 80px; }
-      .equals::before { width: 330px; height: 9px; }
+
+      h1 { font-size: 26px; }
+
+      .equation-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .equals {
+        min-height: 44px;
+      }
+
+      .equals::before {
+        width: 330px;
+        max-width: 85vw;
+        height: 9px;
+      }
+
+      .side {
+        min-height: 260px;
+      }
+
+      .items {
+        min-height: 180px;
+      }
     }
   </style>
 </head>
+
 <body>
-  <h1>Streichholzboxen – Terme entdecken</h1>
-  <div class="subtitle">Entferne immer auf beiden Seiten gleichwertige Teile. Bleiben beide Seiten gleich?</div>
+  <h1>Knack die Box</h1>
+  <div class="subtitle">Tippe auf Streichhölzer oder Boxen, um sie unten abzulegen.</div>
 
   <main class="app">
     <section class="task-switcher">
@@ -254,39 +309,43 @@
     </section>
 
     <section class="equation-wrap">
-      <div class="side" id="leftSide">
+      <div class="side" id="leftSide" data-side="left">
         <div class="value-info" id="leftInfo"></div>
-        <div class="items" id="leftItems" data-side="left"></div>
+        <div class="items" id="leftItems"></div>
       </div>
 
       <div class="equals"></div>
 
-      <div class="side" id="rightSide">
-                <div class="value-info" id="rightInfo"></div>
-        <div class="items" id="rightItems" data-side="right"></div>
+      <div class="side" id="rightSide" data-side="right">
+        <div class="value-info" id="rightInfo"></div>
+        <div class="items" id="rightItems"></div>
       </div>
     </section>
 
     <section id="trash" class="trash">
-      <div class="trash-title">Hierher ziehen, um ein Teil wegzunehmen</div>
-      <small>Tipp: Die Gleichheit bleibt nur erhalten, wenn auf beiden Seiten gleichwertig weggenommen wird.</small>
+      <div class="trash-title">Ablage</div>
+      <small>Tippe oben auf ein Teil, um es hier abzulegen.</small>
+      <div id="returnHint" class="return-hint">Jetzt links oder rechts antippen, um das markierte Teil zurückzulegen.</div>
       <div id="removedItems" class="removed-items"></div>
     </section>
-</main>
+  </main>
 
   <script src="aufgaben.js"></script>
   <script src="arbeitsanweisung.js"></script>
+
   <script>
     let task = { leftBoxes: 1, leftMatches: 3, rightBoxes: 0, rightMatches: 7, boxValue: 4 };
     let state = structuredClone(task);
     let removedItems = [];
-    let dragged = null;
+    let selectedRemovedIndex = null;
     let lastStateEqual = true;
 
     function calculateBoxValue(t) {
       const boxDifference = t.leftBoxes - t.rightBoxes;
       const matchDifference = t.rightMatches - t.leftMatches;
+
       if (boxDifference === 0) return null;
+
       const value = matchDifference / boxDifference;
       return Number.isInteger(value) && value >= 0 ? value : null;
     }
@@ -294,20 +353,25 @@
     function loadTask(newTask) {
       task = structuredClone(newTask);
       task.boxValue = calculateBoxValue(task);
+      selectedRemovedIndex = null;
       resetTask();
     }
 
     function resetTask() {
       state = structuredClone(task);
       removedItems = [];
+      selectedRemovedIndex = null;
+      lastStateEqual = true;
       render();
+      updateReturnHint();
     }
 
     function loadPreset(number) {
-      if (!aufgaben || !aufgaben[number]) {
+      if (typeof aufgaben === "undefined" || !aufgaben[number]) {
         alert("Aufgabe " + number + " wurde in aufgaben.js nicht gefunden.");
         return;
       }
+
       loadTask(aufgaben[number]);
     }
 
@@ -317,47 +381,55 @@
       renderRemovedItems();
       checkEquality();
       updateSolution(false);
+      updateReturnHint();
     }
 
     function renderSide(side) {
       const container = document.getElementById(side + "Items");
       container.innerHTML = "";
+
       const boxes = state[side + "Boxes"];
       const matches = state[side + "Matches"];
-      for (let i = 0; i < boxes; i++) container.appendChild(createItem("box", side));
-      for (let i = 0; i < matches; i++) container.appendChild(createItem("match", side));
-      document.getElementById(side + "Info").textContent = `${boxes} Box(en) und ${matches} Streichholz/Streichhölzer`;
+
+      for (let i = 0; i < boxes; i++) {
+        container.appendChild(createItem("box", side));
+      }
+
+      for (let i = 0; i < matches; i++) {
+        container.appendChild(createItem("match", side));
+      }
+
+      document.getElementById(side + "Info").textContent =
+        `${boxes} Box(en) und ${matches} Streichholz/Streichhölzer`;
     }
 
-    function createItem(type, side, source = "side", removedIndex = null) {
+    function createItem(type, side) {
       const el = document.createElement("div");
-      el.className = type === "box" ? "box" : "match";
-      el.draggable = true;
-      el.dataset.type = type;
-      el.dataset.side = side;
-      el.dataset.source = source;
-      if (removedIndex !== null) el.dataset.removedIndex = removedIndex;
+      el.className = type + " pop-in";
+      el.setAttribute("role", "button");
+      el.setAttribute("aria-label", type === "box" ? "Box entfernen" : "Streichholz entfernen");
 
-      el.addEventListener("dragstart", (event) => {
-        dragged = { type, side, source, removedIndex };
-        const dragImage = el.cloneNode(true);
-        dragImage.style.position = "absolute";
-        dragImage.style.top = "-1000px";
-        dragImage.style.left = "-1000px";
-        dragImage.style.opacity = "1";
-        dragImage.style.pointerEvents = "none";
-        document.body.appendChild(dragImage);
-        event.dataTransfer.setDragImage(dragImage, dragImage.offsetWidth / 2, dragImage.offsetHeight / 2);
-        setTimeout(() => dragImage.remove(), 0);
+      el.addEventListener("click", (event) => {
+        event.stopPropagation();
+
+        el.classList.remove("pop-in");
+        el.classList.add("pop-out");
+
+        setTimeout(() => {
+          removeOne(type, side);
+        }, 180);
       });
+
       return el;
     }
 
     function removeOne(type, side) {
       const key = side + (type === "box" ? "Boxes" : "Matches");
+
       if (state[key] > 0) {
         state[key]--;
-        removedItems.push({ type, side });
+        removedItems.push({ type, fromSide: side });
+        selectedRemovedIndex = null;
         render();
       }
     }
@@ -365,21 +437,50 @@
     function renderRemovedItems() {
       const container = document.getElementById("removedItems");
       container.innerHTML = "";
+
       removedItems.forEach((item, index) => {
-        const el = createItem(item.type, item.side, "removed", index);
-        el.title = item.side === "left" ? "von links entfernt" : "von rechts entfernt";
+        const el = document.createElement("div");
+        el.className = item.type + " pop-in";
+
+        if (index === selectedRemovedIndex) {
+          el.classList.add("selected");
+        }
+
+        el.setAttribute("role", "button");
+        el.setAttribute("aria-label", item.type === "box" ? "Box auswählen" : "Streichholz auswählen");
+
+        el.addEventListener("click", (event) => {
+          event.stopPropagation();
+          selectedRemovedIndex = selectedRemovedIndex === index ? null : index;
+          render();
+        });
+
         container.appendChild(el);
       });
     }
 
-    function returnRemovedItem(index, targetSide) {
-      const item = removedItems[index];
+    function returnSelectedItem(targetSide) {
+      if (selectedRemovedIndex === null) return;
+
+      const item = removedItems[selectedRemovedIndex];
       if (!item) return;
+
       const key = targetSide + (item.type === "box" ? "Boxes" : "Matches");
       state[key]++;
-      removedItems.splice(index, 1);
-      dragged = null;
+
+      removedItems.splice(selectedRemovedIndex, 1);
+      selectedRemovedIndex = null;
       render();
+    }
+
+    document.getElementById("leftSide").addEventListener("click", () => returnSelectedItem("left"));
+    document.getElementById("rightSide").addEventListener("click", () => returnSelectedItem("right"));
+
+    function updateReturnHint() {
+      const hasSelection = selectedRemovedIndex !== null;
+      document.getElementById("returnHint").classList.toggle("visible", hasSelection);
+      document.getElementById("leftSide").classList.toggle("return-target", hasSelection);
+      document.getElementById("rightSide").classList.toggle("return-target", hasSelection);
     }
 
     function checkEquality() {
@@ -412,44 +513,18 @@
 
     function updateSolution(forceVisible) {
       const solution = document.getElementById("solution");
+
       if (!forceVisible && !solution.classList.contains("visible")) return;
+
       solution.textContent = task.boxValue === null
         ? "Diese Aufgabe hat keine eindeutige positive ganze Lösung."
         : `Eine Box enthält ${task.boxValue} Streichhölzer.`;
     }
 
-    const trash = document.getElementById("trash");
-    trash.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      trash.classList.add("drag-over");
-    });
-    trash.addEventListener("dragleave", () => trash.classList.remove("drag-over"));
-    trash.addEventListener("drop", (e) => {
-      e.preventDefault();
-      trash.classList.remove("drag-over");
-      if (dragged && dragged.source === "side") removeOne(dragged.type, dragged.side);
-      dragged = null;
-    });
-
-    document.querySelectorAll(".items").forEach(zone => {
-      zone.addEventListener("dragover", e => {
-        e.preventDefault();
-        zone.classList.add("drag-over");
-      });
-      zone.addEventListener("dragleave", () => zone.classList.remove("drag-over"));
-      zone.addEventListener("drop", e => {
-        e.preventDefault();
-        zone.classList.remove("drag-over");
-        if (dragged && dragged.source === "removed") {
-          returnRemovedItem(dragged.removedIndex, zone.dataset.side);
-        }
-        dragged = null;
-      });
-    });
-
-    document.getElementById("questionText").innerText = typeof instructionText !== "undefined"
-      ? instructionText
-      : "Wie viele Streichhölzer befinden sich in einer Box?";
+    document.getElementById("questionText").innerText =
+      typeof instructionText !== "undefined"
+        ? instructionText
+        : "Wie viele Streichhölzer befinden sich in einer Box?";
 
     loadPreset(1);
   </script>

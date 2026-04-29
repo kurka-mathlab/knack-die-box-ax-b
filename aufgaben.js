@@ -1,3 +1,9 @@
+// Hier kannst du deine 5 Aufgaben ändern.
+// leftBoxes = Boxen links
+// leftMatches = Streichhölzer links
+// rightBoxes = Boxen rechts
+// rightMatches = Streichhölzer rechts
+
 const aufgaben = {
   1: { leftBoxes: 1, leftMatches: 3, rightBoxes: 0, rightMatches: 7 },
   2: { leftBoxes: 2, leftMatches: 1, rightBoxes: 0, rightMatches: 9 },
