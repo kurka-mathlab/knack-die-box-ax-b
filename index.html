@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Streichholzboxen – Terme entdecken</title>
+  <style>
+    :root {
+      --bg: #f7f2e8;
+      --card: #fffaf0;
+      --ink: #2d2a26;
+      --accent: #8b5e34;
+      --green: #3c8d57;
+      --red: #d62828;
+      --line: #d8c7aa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #fff8e8, var(--bg));
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0 0 8px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-bottom: 22px;
+      font-size: 17px;
+    }
+
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .task-switcher {
+      background: white;
+      border: 2px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.08);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .task-switcher button {
+      min-width: 120px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 14px;
+      background: var(--accent);
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,.12);
+    }
+
+    button:hover { filter: brightness(1.08); }
+
+    .equation-wrap {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .side {
+      background: var(--card);
+      border: 3px solid var(--line);
+      border-radius: 22px;
+      min-height: 360px;
+      padding: 16px;
+      box-shadow: inset 0 0 0 4px rgba(255,255,255,.5), 0 8px 20px rgba(0,0,0,.08);
+      position: relative;
+    }
+
+    .side h2 {
+      margin: 0 0 12px;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .value-info {
+      text-align: center;
+      font-size: 15px;
+      margin-bottom: 14px;
+      color: #66584a;
+    }
+
+    .items {
+      min-height: 250px;
+      border: 2px dashed #cdbb9f;
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      background: rgba(255,255,255,.45);
+    }
+
+    .items.drag-over {
+      background: #f4ead8;
+      border-color: var(--accent);
+    }
+
+    .equals {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 26px;
+      position: relative;
+    }
+
+    .equals::before {
+      content: "";
+      width: 9px;
+      height: 330px;
+      background: var(--green);
+      border-radius: 99px;
+      display: block;
+      transition: background 0.2s ease;
+    }
+
+    .equals.equal::before { background: var(--green); }
+    .equals.not-equal::before { background: var(--red); }
+
+    @keyframes flashRed {
+      0% { background: var(--red); }
+      50% { background: #ff6b6b; }
+      100% { background: var(--red); }
+    }
+
+    .equals.flash::before {
+      animation: flashRed 0.4s ease;
+    }
+
+    .match {
+      width: 20px;
+      height: 100px;
+      background: url("match.png") center/contain no-repeat;
+      cursor: grab;
+      margin: 4px;
+    }
+
+    .box {
+      width: 150px;
+      height: 100px;
+      background: url("box.png") center/contain no-repeat;
+      cursor: grab;
+      position: relative;
+      margin: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .trash {
+      background: white;
+      border: 3px dashed #b6a58e;
+      border-radius: 18px;
+      padding: 18px;
+      min-height: 150px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: #756653;
+    }
+
+    .trash-title { margin-bottom: 4px; }
+
+    .trash.drag-over {
+      border-color: var(--red);
+      background: #fff1f1;
+      color: var(--red);
+    }
+
+    .removed-items {
+      margin-top: 14px;
+      min-height: 80px;
+      border-top: 2px solid #eadfce;
+      padding-top: 14px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+    }
+.question-box {
+      background: white;
+      border: 2px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    #questionText { white-space: pre-line; }
+
+    .solution {
+      margin-top: 10px;
+      font-size: 20px;
+      color: var(--green);
+      display: none;
+    }
+
+    .solution.visible { display: block; }
+
+    @media (max-width: 850px) {
+      body { padding: 12px; }
+      .equation-wrap { grid-template-columns: 1fr; }
+      .equals { min-height: 80px; }
+      .equals::before { width: 330px; height: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Streichholzboxen – Terme entdecken</h1>
+  <div class="subtitle">Entferne immer auf beiden Seiten gleichwertige Teile. Bleiben beide Seiten gleich?</div>
+
+  <main class="app">
+    <section class="task-switcher">
+      <button onclick="loadPreset(1)">Aufgabe 1</button>
+      <button onclick="loadPreset(2)">Aufgabe 2</button>
+      <button onclick="loadPreset(3)">Aufgabe 3</button>
+      <button onclick="loadPreset(4)">Aufgabe 4</button>
+      <button onclick="loadPreset(5)">Aufgabe 5</button>
+      <button onclick="resetTask()">Zurücksetzen</button>
+      <button onclick="toggleSolution()">Lösung anzeigen</button>
+    </section>
+
+    <section class="question-box">
+      <div id="questionText"></div>
+      <div id="solution" class="solution"></div>
+    </section>
+
+    <section class="equation-wrap">
+      <div class="side" id="leftSide">
+        <div class="value-info" id="leftInfo"></div>
+        <div class="items" id="leftItems" data-side="left"></div>
+      </div>
+
+      <div class="equals"></div>
+
+      <div class="side" id="rightSide">
+                <div class="value-info" id="rightInfo"></div>
+        <div class="items" id="rightItems" data-side="right"></div>
+      </div>
+    </section>
+
+    <section id="trash" class="trash">
+      <div class="trash-title">Hierher ziehen, um ein Teil wegzunehmen</div>
+      <small>Tipp: Die Gleichheit bleibt nur erhalten, wenn auf beiden Seiten gleichwertig weggenommen wird.</small>
+      <div id="removedItems" class="removed-items"></div>
+    </section>
+</main>
+
+  <script src="aufgaben.js"></script>
+  <script src="arbeitsanweisung.js"></script>
+  <script>
+    let task = { leftBoxes: 1, leftMatches: 3, rightBoxes: 0, rightMatches: 7, boxValue: 4 };
+    let state = structuredClone(task);
+    let removedItems = [];
+    let dragged = null;
+    let lastStateEqual = true;
+
+    function calculateBoxValue(t) {
+      const boxDifference = t.leftBoxes - t.rightBoxes;
+      const matchDifference = t.rightMatches - t.leftMatches;
+      if (boxDifference === 0) return null;
+      const value = matchDifference / boxDifference;
+      return Number.isInteger(value) && value >= 0 ? value : null;
+    }
+
+    function loadTask(newTask) {
+      task = structuredClone(newTask);
+      task.boxValue = calculateBoxValue(task);
+      resetTask();
+    }
+
+    function resetTask() {
+      state = structuredClone(task);
+      removedItems = [];
+      render();
+    }
+
+    function loadPreset(number) {
+      if (!aufgaben || !aufgaben[number]) {
+        alert("Aufgabe " + number + " wurde in aufgaben.js nicht gefunden.");
+        return;
+      }
+      loadTask(aufgaben[number]);
+    }
+
+    function render() {
+      renderSide("left");
+      renderSide("right");
+      renderRemovedItems();
+      checkEquality();
+      updateSolution(false);
+    }
+
+    function renderSide(side) {
+      const container = document.getElementById(side + "Items");
+      container.innerHTML = "";
+      const boxes = state[side + "Boxes"];
+      const matches = state[side + "Matches"];
+      for (let i = 0; i < boxes; i++) container.appendChild(createItem("box", side));
+      for (let i = 0; i < matches; i++) container.appendChild(createItem("match", side));
+      document.getElementById(side + "Info").textContent = `${boxes} Box(en) und ${matches} Streichholz/Streichhölzer`;
+    }
+
+    function createItem(type, side, source = "side", removedIndex = null) {
+      const el = document.createElement("div");
+      el.className = type === "box" ? "box" : "match";
+      el.draggable = true;
+      el.dataset.type = type;
+      el.dataset.side = side;
+      el.dataset.source = source;
+      if (removedIndex !== null) el.dataset.removedIndex = removedIndex;
+
+      el.addEventListener("dragstart", (event) => {
+        dragged = { type, side, source, removedIndex };
+        const dragImage = el.cloneNode(true);
+        dragImage.style.position = "absolute";
+        dragImage.style.top = "-1000px";
+        dragImage.style.left = "-1000px";
+        dragImage.style.opacity = "1";
+        dragImage.style.pointerEvents = "none";
+        document.body.appendChild(dragImage);
+        event.dataTransfer.setDragImage(dragImage, dragImage.offsetWidth / 2, dragImage.offsetHeight / 2);
+        setTimeout(() => dragImage.remove(), 0);
+      });
+      return el;
+    }
+
+    function removeOne(type, side) {
+      const key = side + (type === "box" ? "Boxes" : "Matches");
+      if (state[key] > 0) {
+        state[key]--;
+        removedItems.push({ type, side });
+        render();
+      }
+    }
+
+    function renderRemovedItems() {
+      const container = document.getElementById("removedItems");
+      container.innerHTML = "";
+      removedItems.forEach((item, index) => {
+        const el = createItem(item.type, item.side, "removed", index);
+        el.title = item.side === "left" ? "von links entfernt" : "von rechts entfernt";
+        container.appendChild(el);
+      });
+    }
+
+    function returnRemovedItem(index, targetSide) {
+      const item = removedItems[index];
+      if (!item) return;
+      const key = targetSide + (item.type === "box" ? "Boxes" : "Matches");
+      state[key]++;
+      removedItems.splice(index, 1);
+      dragged = null;
+      render();
+    }
+
+    function checkEquality() {
+      const left = getValue("left");
+      const right = getValue("right");
+      const isEqual = left === right;
+
+      const equalsEl = document.querySelector(".equals");
+      equalsEl.classList.remove("equal", "not-equal");
+      equalsEl.classList.add(isEqual ? "equal" : "not-equal");
+
+      if (lastStateEqual && !isEqual) {
+        equalsEl.classList.add("flash");
+        setTimeout(() => equalsEl.classList.remove("flash"), 400);
+      }
+
+      lastStateEqual = isEqual;
+    }
+
+    function getValue(side) {
+      if (task.boxValue === null) return NaN;
+      return state[side + "Boxes"] * task.boxValue + state[side + "Matches"];
+    }
+
+    function toggleSolution() {
+      const solution = document.getElementById("solution");
+      solution.classList.toggle("visible");
+      updateSolution(solution.classList.contains("visible"));
+    }
+
+    function updateSolution(forceVisible) {
+      const solution = document.getElementById("solution");
+      if (!forceVisible && !solution.classList.contains("visible")) return;
+      solution.textContent = task.boxValue === null
+        ? "Diese Aufgabe hat keine eindeutige positive ganze Lösung."
+        : `Eine Box enthält ${task.boxValue} Streichhölzer.`;
+    }
+
+    const trash = document.getElementById("trash");
+    trash.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      trash.classList.add("drag-over");
+    });
+    trash.addEventListener("dragleave", () => trash.classList.remove("drag-over"));
+    trash.addEventListener("drop", (e) => {
+      e.preventDefault();
+      trash.classList.remove("drag-over");
+      if (dragged && dragged.source === "side") removeOne(dragged.type, dragged.side);
+      dragged = null;
+    });
+
+    document.querySelectorAll(".items").forEach(zone => {
+      zone.addEventListener("dragover", e => {
+        e.preventDefault();
+        zone.classList.add("drag-over");
+      });
+      zone.addEventListener("dragleave", () => zone.classList.remove("drag-over"));
+      zone.addEventListener("drop", e => {
+        e.preventDefault();
+        zone.classList.remove("drag-over");
+        if (dragged && dragged.source === "removed") {
+          returnRemovedItem(dragged.removedIndex, zone.dataset.side);
+        }
+        dragged = null;
+      });
+    });
+
+    document.getElementById("questionText").innerText = typeof instructionText !== "undefined"
+      ? instructionText
+      : "Wie viele Streichhölzer befinden sich in einer Box?";
+
+    loadPreset(1);
+  </script>
+</body>
+</html>
