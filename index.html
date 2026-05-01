@@ -74,6 +74,12 @@
       box-shadow: 0 4px 10px rgba(0,0,0,.12);
     }
 
+    .task-switcher button.active-task {
+  background: var(--green);
+  transform: scale(1.05);
+  box-shadow: 0 0 0 4px rgba(60, 141, 87, 0.25);
+}
+
     button:hover { filter: brightness(1.08); }
     button:active { transform: scale(0.97); }
 
@@ -294,11 +300,11 @@
 
   <main class="app">
     <section class="task-switcher">
-      <button onclick="loadPreset(1)">Aufgabe 1</button>
-      <button onclick="loadPreset(2)">Aufgabe 2</button>
-      <button onclick="loadPreset(3)">Aufgabe 3</button>
-      <button onclick="loadPreset(4)">Aufgabe 4</button>
-      <button onclick="loadPreset(5)">Aufgabe 5</button>
+      <button id="taskButton1" onclick="loadPreset(1)">Aufgabe 1</button>
+<button id="taskButton2" onclick="loadPreset(2)">Aufgabe 2</button>
+<button id="taskButton3" onclick="loadPreset(3)">Aufgabe 3</button>
+<button id="taskButton4" onclick="loadPreset(4)">Aufgabe 4</button>
+<button id="taskButton5" onclick="loadPreset(5)">Aufgabe 5</button>
       <button onclick="resetTask()">Zurücksetzen</button>
       <button onclick="toggleSolution()">Lösung anzeigen</button>
     </section>
@@ -367,13 +373,25 @@
     }
 
     function loadPreset(number) {
-      if (typeof aufgaben === "undefined" || !aufgaben[number]) {
-        alert("Aufgabe " + number + " wurde in aufgaben.js nicht gefunden.");
-        return;
-      }
+  if (typeof aufgaben === "undefined" || !aufgaben[number]) {
+    alert("Aufgabe " + number + " wurde in aufgaben.js nicht gefunden.");
+    return;
+  }
 
-      loadTask(aufgaben[number]);
-    }
+  loadTask(aufgaben[number]);
+  markActiveTaskButton(number);
+}
+
+function markActiveTaskButton(number) {
+  document.querySelectorAll(".task-switcher button").forEach(button => {
+    button.classList.remove("active-task");
+  });
+
+  const activeButton = document.getElementById("taskButton" + number);
+  if (activeButton) {
+    activeButton.classList.add("active-task");
+  }
+}
 
     function render() {
       renderSide("left");
