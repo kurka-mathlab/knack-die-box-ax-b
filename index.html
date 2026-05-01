@@ -15,6 +15,13 @@
       --red: #d62828;
       --line: #d8c7aa;
       --selected: #f7b731;
+      
+      --task: #8b3a2e;
+      --task-hover: #a04636;
+      --task-active: #5e241c;
+
+      --solution: #3c8d57;
+      --solution-hover: #4fa36a;
     }
 
     * { box-sizing: border-box; }
@@ -62,22 +69,38 @@
       justify-content: center;
     }
 
-    button {
-      border: none;
-      border-radius: 12px;
-      padding: 11px 14px;
-      background: var(--accent);
-      color: white;
-      font-weight: bold;
-      font-size: 15px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,.12);
-    }
+      button {
+  border: none;
+  border-radius: 12px;
+  padding: 11px 14px;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,.12);
+  transition: all 0.15s ease;
+}
 
-    .task-switcher button.active-task {
-  background: var(--green);
+.task-switcher button {
+  background: var(--task);
+}
+
+.task-switcher button:hover {
+  background: var(--task-hover);
+}
+    
+   .task-switcher button.active-task {
+  background: var(--task-active);
   transform: scale(1.05);
-  box-shadow: 0 0 0 4px rgba(60, 141, 87, 0.25);
+  box-shadow: 0 0 0 4px rgba(139, 58, 46, 0.25);
+}
+
+    .solution-btn {
+  background: var(--solution);
+}
+
+.solution-btn:hover {
+  background: var(--solution-hover);
 }
 
     button:hover { filter: brightness(1.08); }
@@ -305,8 +328,8 @@
 <button id="taskButton3" onclick="loadPreset(3)">Aufgabe 3</button>
 <button id="taskButton4" onclick="loadPreset(4)">Aufgabe 4</button>
 <button id="taskButton5" onclick="loadPreset(5)">Aufgabe 5</button>
-      <button onclick="resetTask()">Zurücksetzen</button>
-      <button onclick="toggleSolution()">Lösung anzeigen</button>
+      <button class="reset-btn" onclick="resetTask()">Zurücksetzen</button>
+      <button class="solution-btn" onclick="toggleSolution()">Lösung anzeigen</button>
     </section>
 
     <section class="question-box">
