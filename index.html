@@ -614,7 +614,7 @@ function markActiveTaskButton(number) {
         : `Eine Box enthält ${task.boxValue} Streichhölzer.`;
     }
 
-    document.getElementById("questionText").innerText =
+    document.getElementById("questionText").innerHTML =
       typeof instructionText !== "undefined"
         ? instructionText
         : "Wie viele Streichhölzer befinden sich in einer Box?";
