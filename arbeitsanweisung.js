@@ -1,4 +1,3 @@
-const instructionText = `Wie viele Streichhölzer befinden sich in einer Box?
-Tippe auf Streichhölzer oder Boxen, um sie abzulegen.
-Markiere unten ein Teil und tippe dann links oder rechts, um es zurückzulegen.
-`;
+const instructionText = `Finde heraus, <strong>wie viele Streichhölzer in einer Schachtel sein müssen.</strong><br>
+Jeweils links und rechts im Kasten sollen immer <strong>genau gleich viele</strong> Hölzer sein – bedenke dabei, dass sich in den Schachteln auch Hölzer befinden.<br>
+Tippe auf <strong>Streichhölzer oder Boxen</strong>, um sie abzulegen.`;
