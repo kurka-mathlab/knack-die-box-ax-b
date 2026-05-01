@@ -81,10 +81,30 @@
   transition: all 0.15s ease;
 }
 
-.task-switcher button {
+.task-btn {
   background: var(--task);
 }
 
+    .task-btn.active-task {
+  background: var(--task-active);
+}
+
+    .solution-btn {
+  background: var(--solution);
+}
+
+.solution-btn:hover {
+  background: var(--solution-hover);
+}
+
+    .reset-btn {
+  background: #6c757d;
+}
+
+.task-btn:hover {
+  background: var(--task-hover);
+}
+    
 .task-switcher button:hover {
   background: var(--task-hover);
 }
@@ -323,13 +343,14 @@
 
   <main class="app">
     <section class="task-switcher">
-      <button id="taskButton1" onclick="loadPreset(1)">Aufgabe 1</button>
-<button id="taskButton2" onclick="loadPreset(2)">Aufgabe 2</button>
-<button id="taskButton3" onclick="loadPreset(3)">Aufgabe 3</button>
-<button id="taskButton4" onclick="loadPreset(4)">Aufgabe 4</button>
-<button id="taskButton5" onclick="loadPreset(5)">Aufgabe 5</button>
-      <button class="reset-btn" onclick="resetTask()">Zurücksetzen</button>
-      <button class="solution-btn" onclick="toggleSolution()">Lösung anzeigen</button>
+      <button class="task-btn" id="taskButton1" onclick="loadPreset(1)">Aufgabe 1</button>
+<button class="task-btn" id="taskButton2" onclick="loadPreset(2)">Aufgabe 2</button>
+<button class="task-btn" id="taskButton3" onclick="loadPreset(3)">Aufgabe 3</button>
+<button class="task-btn" id="taskButton4" onclick="loadPreset(4)">Aufgabe 4</button>
+<button class="task-btn" id="taskButton5" onclick="loadPreset(5)">Aufgabe 5</button>
+
+<button class="reset-btn" onclick="resetTask()">Zurücksetzen</button>
+<button class="solution-btn" onclick="toggleSolution()">Lösung anzeigen</button>
     </section>
 
     <section class="question-box">
