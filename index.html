@@ -334,46 +334,7 @@
   box-shadow: 0 0 0 4px rgba(139, 58, 46, 0.18);
 }
 
-    @media (max-width: 850px) {
-      body { padding: 12px; }
-
-      h1 {
-    font-size: 36px;
-  }
-
-      .equation-wrap {
-        grid-template-columns: 1fr;
-      }
-
-      .equals {
-        min-height: 44px;
-      }
-
-      .equals::before {
-        width: 330px;
-        max-width: 85vw;
-        height: 9px;
-      }
-
-      .side {
-        min-height: 260px;
-      }
-
-      .items {
-  min-height: 250px;
-  border: 2px dashed #cdbb9f;
-  border-radius: 16px;
-  padding: 14px;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  background: white;
-}
-
-
-
-.overlay {
+    .overlay {
   position: fixed;
   inset: 0;
   background: rgba(45, 42, 38, 0.55);
@@ -419,6 +380,45 @@
   padding: 0;
   font-size: 24px;
 }
+
+    @media (max-width: 850px) {
+      body { padding: 12px; }
+
+      h1 {
+    font-size: 36px;
+  }
+
+      .equation-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .equals {
+        min-height: 44px;
+      }
+
+      .equals::before {
+        width: 330px;
+        max-width: 85vw;
+        height: 9px;
+      }
+
+      .side {
+        min-height: 260px;
+      }
+
+      .items {
+  min-height: 250px;
+  border: 2px dashed #cdbb9f;
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  background: white;
+}
+
+
       
     }
   </style>
@@ -536,7 +536,6 @@ function markActiveTaskButton(number) {
       renderSide("right");
       renderRemovedItems();
       checkEquality();
-      updateSolution(false);
       updateReturnHint();
     }
 
@@ -674,16 +673,7 @@ function closeSolutionOverlay() {
   document.getElementById("solutionOverlay").classList.add("hidden");
 }
 
-    function updateSolution(forceVisible) {
-      const solution = document.getElementById("solution");
-
-      if (!forceVisible && !solution.classList.contains("visible")) return;
-
-      solution.textContent = task.boxValue === null
-        ? "Diese Aufgabe hat keine eindeutige positive ganze Lösung."
-        : `Eine Box enthält ${task.boxValue} Streichhölzer.`;
-    }
-
+    
     document.getElementById("questionText").innerHTML =
   typeof instructionText !== "undefined"
     ? instructionText
