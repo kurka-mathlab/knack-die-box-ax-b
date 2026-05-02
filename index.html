@@ -469,7 +469,7 @@
 <button class="task-btn" id="taskButton5" onclick="loadPreset(5)">Aufgabe 5</button>
 
 <button class="reset-btn" onclick="resetTask()">Zurücksetzen</button>
-<button class="solution-btn" onclick="openSolutionOverlay()">Lösung prüfen</button>
+<button id="checkButton" class="check-btn" onclick="checkStudentAnswer()">Prüfen</button>
     </section>
 
     <section class="question-box">
@@ -716,14 +716,34 @@ function closeSolutionOverlay() {
 function checkStudentAnswer() {
   const answer = Number(document.getElementById("studentAnswer").value);
   const feedback = document.getElementById("solutionFeedback");
+  const button = document.getElementById("checkButton");
 
   if (answer === task.boxValue) {
-    feedback.textContent = "Antwort ist korrekt!";
+    feedback.textContent = "Deine Antwort ist korrekt!";
     feedback.className = "correct";
-  } else {
-    feedback.textContent = "Antwort stimmt leider nicht! Versuche es nochmal!";
-    feedback.className = "wrong";
+    return;
   }
+
+  // falsche Antwort
+  feedback.textContent = "Deine Antwort stimmt leider nicht! Versuche es nochmal!";
+  feedback.className = "wrong";
+
+  // Button sperren
+  button.disabled = true;
+
+  let seconds = 15;
+  button.textContent = `Warte ${seconds}s`;
+
+  const interval = setInterval(() => {
+    seconds--;
+    button.textContent = `Warte ${seconds}s`;
+
+    if (seconds <= 0) {
+      clearInterval(interval);
+      button.disabled = false;
+      button.textContent = "Prüfen";
+    }
+  }, 1000);
 }
 
     
