@@ -200,7 +200,7 @@
   gap: 0;
   align-items: stretch;
 
-  background: #f3e4e1;
+  background: linear-gradient(135deg, #e3c18b, #d3a96d); /* helles Schultisch-Braun */
   border: 8px solid #2d2a26;
   border-radius: 28px;
   padding: 18px;
@@ -223,9 +223,9 @@
   background: #f2ddd8;
 }
 
-    .side.return-target {
-  outline: 5px solid var(--task-active);
-  outline-offset: 4px;
+   .side.return-target .items {
+  border-color: var(--task-active);
+  box-shadow: 0 0 0 4px rgba(94, 36, 28, 0.18);
 }
 
     .value-info {
@@ -244,7 +244,8 @@
       gap: 12px;
       flex-wrap: wrap;
       align-content: flex-start;
-      background: white;
+      background: rgba(255, 255, 255, 0.68);
+      backdrop-filter: blur(1px);
     }
 
     .equals {
