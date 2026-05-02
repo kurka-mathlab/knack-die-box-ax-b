@@ -277,6 +277,8 @@
   background: url("match.png") center/contain no-repeat;
   cursor: pointer;
   margin: 2px; /* wichtig für weniger Abstand */
+  box-shadow: 3px 4px 8px rgba(0,0,0,0.3);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
     .box {
@@ -290,7 +292,9 @@
 
     .match:active,
     .box:active {
-      transform: scale(0.94);
+      transform: translateY(2px);
+      box-shadow: 1px 2px 4px rgba(0,0,0,0.2);
+      
     }
 
     .pop-out {
