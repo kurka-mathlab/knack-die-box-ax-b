@@ -44,32 +44,33 @@
   padding: 24px;
 }
 
-    .header {
-  display: inline-block;
-  text-align: left;
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 18px;
 }
-    
-   h1 {
-  text-align: center;
-  margin: 0 0 8px;
-  font-size: 48px;
+
+.header h1 {
+  margin: 0;
   font-family: 'Satisfy', cursive;
+  font-size: 58px;
   color: #5e241c;
-  text-shadow: 
-    2px 2px 0 #ead3cd,
-    4px 4px 6px rgba(0,0,0,0.15);
+  text-align: center;
+  position: relative;
 }
 
-    .subtitle-clean {
+.header-subtitle {
   font-family: Arial, sans-serif;
-  font-size: 14px;
+  font-size: 11px;
+  letter-spacing: 2.2px;
   text-transform: uppercase;
-  letter-spacing: 2px;
-
   color: #5e241c;
+  opacity: 0.85;
 
-  text-align: right;
+  width: max-content;
   margin-top: -6px;
+  margin-left: 145px; /* damit es etwa ab Mitte h1 beginnt */
 }
     
 
@@ -506,9 +507,9 @@
 </head>
 
 <body>
-  <div class="header">
+ <div class="header">
   <h1>Knack die Box</h1>
-  <div class="subtitle-clean">EINFACHE GLEICHUNGEN LÖSEN</div>
+  <div class="header-subtitle">EINFACHE GLEICHUNGEN LÖSEN</div>
 </div>
 
 
