@@ -371,14 +371,27 @@
   color: var(--green);
 }
 
+.overlay-box {
+  position: relative; /* wichtig */
+}
+
 .close-btn {
-  float: right;
+  position: absolute;
+  top: -12px;
+  right: -12px;
+
   background: var(--task-active);
+  color: white;
   border-radius: 50%;
+
   width: 36px;
   height: 36px;
-  padding: 0;
-  font-size: 24px;
+
+  font-size: 22px;
+  line-height: 36px;
+  text-align: center;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 
@@ -411,6 +424,20 @@
 
 #solutionFeedback.wrong {
   color: var(--red);
+}
+
+.check-btn {
+  width: 100%;
+  max-width: 220px;
+  font-size: 22px;
+  padding: 10px;
+}
+    
+    .check-btn:disabled {
+  background: #b5b5b5;
+  color: #eee;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
     @media (max-width: 850px) {
