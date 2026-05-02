@@ -93,6 +93,7 @@
       justify-content: center;
     }
 
+    /* Button Styles */
       button {
   border: none;
   border-radius: 12px;
@@ -105,16 +106,30 @@
   transition: all 0.15s ease;
 }
 
+  button:disabled {
+  filter: none;
+}
+
 .task-btn {
   background: var(--task);
+}
+
+    .task-btn:hover {
+  background: var(--task-hover);
 }
 
     .task-btn.active-task {
   background: var(--task-active);
 }
 
-    .solution-btn {
+.solution-btn,
+.check-btn {
   background: var(--solution);
+}
+
+.solution-btn:hover,
+.check-btn:hover {
+  background: var(--solution-hover);
 }
 
 .solution-btn:hover {
@@ -123,6 +138,10 @@
 
     .reset-btn {
   background: #6c757d;
+}
+
+  .reset-btn:hover {
+  background: #5a6268;
 }
 
 .task-btn:hover {
@@ -430,10 +449,6 @@
   margin: 10px 0;
 }
 
-.check-btn {
-  background: var(--green);
-  margin-top: 8px;
-}
 
 #solutionFeedback {
   margin-top: 16px;
@@ -450,6 +465,7 @@
 }
 
 .check-btn {
+  margin-top: 8px;
   width: 100%;
   max-width: 220px;
   font-size: 22px;
