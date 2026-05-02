@@ -200,7 +200,7 @@
   gap: 0;
   align-items: stretch;
 
-  background: linear-gradient(135deg, #e3c18b, #d3a96d); /* helles Schultisch-Braun */
+  background: linear-gradient(135deg, #f1d6a8, #e6c693); /* helles Schultisch-Braun */
   border: 8px solid #8b5e34;
   border-radius: 28px;
   padding: 18px;
@@ -236,17 +236,17 @@
     }
 
     .items {
-      min-height: 250px;
-      border: none;
-      border-radius: 16px;
-      padding: 14px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-content: flex-start;
-      background: rgba(255, 255, 255, 0.01);
-      backdrop-filter: blur(1px);
-    }
+  min-height: 250px;
+  border: none;                /* gestrichelte Linie weg */
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-content: flex-start;
+
+  background: transparent;     /* komplett durchsichtig */
+}
 
     .equals {
       display: flex;
@@ -472,7 +472,7 @@
   box-shadow: none;
 }
 
-    */ Tablet */
+    /* Tablet */
    @media (max-width: 850px) {
 
   body {
@@ -526,7 +526,7 @@
     min-height: 190px;
     padding: 10px;
     gap: 6px;
-    background: rgba(255,255,255,0.72);
+    background: transparent;     /* komplett durchsichtig */
   }
 
   .box {
@@ -639,7 +639,7 @@
     min-height: 145px;
     padding: 8px;
     gap: 4px;
-    background: rgba(255,255,255,0.72);
+    background: transparent;     /* komplett durchsichtig */
   }
 
   .box {
