@@ -44,23 +44,34 @@
   padding: 24px;
 }
 
+    .header {
+  display: inline-block;
+  text-align: left;
+}
+    
    h1 {
   text-align: center;
   margin: 0 0 8px;
   font-size: 48px;
   font-family: 'Satisfy', cursive;
   color: #5e241c;
-
   text-shadow: 
     2px 2px 0 #ead3cd,
     4px 4px 6px rgba(0,0,0,0.15);
 }
 
-    .subtitle {
-      text-align: center;
-      margin-bottom: 22px;
-      font-size: 17px;
-    }
+    .subtitle-clean {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+
+  color: #5e241c;
+
+  text-align: right;
+  margin-top: -6px;
+}
+    
 
     .app {
       max-width: 1200px;
@@ -495,7 +506,10 @@
 </head>
 
 <body>
+  <div class="header">
   <h1>Knack die Box</h1>
+  <div class="subtitle-clean">EINFACHE GLEICHUNGEN LÖSEN</div>
+</div>
 
 
   <main class="app">
