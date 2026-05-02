@@ -381,6 +381,38 @@
   font-size: 24px;
 }
 
+
+/* Lösungsüberprüfung */
+    #studentAnswer {
+  width: 100%;
+  max-width: 220px;
+  font-size: 24px;
+  padding: 10px;
+  text-align: center;
+  border: 3px solid var(--task-active);
+  border-radius: 12px;
+  margin: 10px 0;
+}
+
+.check-btn {
+  background: var(--green);
+  margin-top: 8px;
+}
+
+#solutionFeedback {
+  margin-top: 16px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#solutionFeedback.correct {
+  color: var(--green);
+}
+
+#solutionFeedback.wrong {
+  color: var(--red);
+}
+
     @media (max-width: 850px) {
       body { padding: 12px; }
 
@@ -437,21 +469,30 @@
 <button class="task-btn" id="taskButton5" onclick="loadPreset(5)">Aufgabe 5</button>
 
 <button class="reset-btn" onclick="resetTask()">Zurücksetzen</button>
-<button class="solution-btn" onclick="toggleSolution()">Lösung anzeigen</button>
+<button class="solution-btn" onclick="openSolutionOverlay()">Lösung prüfen</button>
     </section>
 
     <section class="question-box">
       <div id="questionText"></div>
          </section>
 
+
+    <!-- Overlay für die Lösungseingabe -->
     <div id="solutionOverlay" class="overlay hidden" onclick="closeSolutionOverlay()">
   <div class="overlay-box" onclick="event.stopPropagation()">
     <button class="close-btn" onclick="closeSolutionOverlay()">×</button>
-    <h2>Lösung</h2>
-    <div id="overlaySolutionText"></div>
+    <h2>Lösung prüfen</h2>
+
+    <p>Wie viele Streichhölzer sind in einer Schachtel?</p>
+
+    <input id="studentAnswer" type="number" inputmode="numeric" placeholder="Deine Lösung" />
+
+    <button class="check-btn" onclick="checkStudentAnswer()">Prüfen</button>
+
+    <div id="solutionFeedback"></div>
   </div>
 </div>
-
+<!-- Ende Overlay für die Lösungseingabe -->
     <section class="equation-wrap">
       <div class="side" id="leftSide" data-side="left">
         <div class="value-info" id="leftInfo"></div>
@@ -660,17 +701,29 @@ function markActiveTaskButton(number) {
       return state[side + "Boxes"] * task.boxValue + state[side + "Matches"];
     }
 
-    function toggleSolution() {
-  const text = task.boxValue === null
-    ? "Diese Aufgabe hat keine eindeutige positive ganze Lösung."
-    : `Eine Box enthält ${task.boxValue} Streichhölzer.`;
-
-  document.getElementById("overlaySolutionText").textContent = text;
+  function openSolutionOverlay() {
+  document.getElementById("studentAnswer").value = "";
+  document.getElementById("solutionFeedback").textContent = "";
+  document.getElementById("solutionFeedback").className = "";
   document.getElementById("solutionOverlay").classList.remove("hidden");
+  setTimeout(() => document.getElementById("studentAnswer").focus(), 100);
 }
 
 function closeSolutionOverlay() {
   document.getElementById("solutionOverlay").classList.add("hidden");
+}
+
+function checkStudentAnswer() {
+  const answer = Number(document.getElementById("studentAnswer").value);
+  const feedback = document.getElementById("solutionFeedback");
+
+  if (answer === task.boxValue) {
+    feedback.textContent = "Antwort ist korrekt!";
+    feedback.className = "correct";
+  } else {
+    feedback.textContent = "Antwort stimmt leider nicht! Versuche es nochmal!";
+    feedback.className = "wrong";
+  }
 }
 
     
