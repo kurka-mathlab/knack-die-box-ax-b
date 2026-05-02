@@ -469,7 +469,7 @@
 <button class="task-btn" id="taskButton5" onclick="loadPreset(5)">Aufgabe 5</button>
 
 <button class="reset-btn" onclick="resetTask()">Zurücksetzen</button>
-<button id="checkButton" class="check-btn" onclick="checkStudentAnswer()">Prüfen</button>
+<button class="solution-btn" onclick="openSolutionOverlay()">Lösung prüfen</button>
     </section>
 
     <section class="question-box">
@@ -487,7 +487,7 @@
 
     <input id="studentAnswer" type="number" inputmode="numeric" placeholder="Deine Lösung" />
 
-    <button class="check-btn" onclick="checkStudentAnswer()">Prüfen</button>
+    <button id="checkButton" class="check-btn" onclick="checkStudentAnswer()">Prüfen</button>
 
     <div id="solutionFeedback"></div>
   </div>
