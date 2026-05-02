@@ -472,46 +472,217 @@
   box-shadow: none;
 }
 
-    @media (max-width: 850px) {
-      body { padding: 12px; }
+    */ Tablet */
+   @media (max-width: 850px) {
 
-      h1 {
-    font-size: 36px;
+  body {
+    padding: 14px;
   }
 
-      .equation-wrap {
-        grid-template-columns: 1fr;
-      }
+  .header h1 {
+    font-size: 50px;
+  }
 
-      .equals {
-        min-height: 44px;
-      }
+  .header-subtitle {
+    font-size: 11px;
+    letter-spacing: 1.8px;
+    margin-left: 120px;
+    margin-top: -5px;
+  }
 
-      .equals::before {
-        width: 9px;
-        max-width: 85vw;
-        height: 330px;
-      }
+  .app {
+    gap: 14px;
+  }
 
-      .side {
-        min-height: 260px;
-      }
+  .task-switcher {
+    padding: 12px;
+    gap: 8px;
+  }
 
-      .items {
-  min-height: 250px;
-  border: 2px dashed #cdbb9f;
-  border-radius: 16px;
-  padding: 14px;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  background: white;
+  .task-switcher button {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .question-box {
+    font-size: 17px;
+    padding: 14px;
+    line-height: 1.25;
+  }
+
+  .equation-wrap {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 10px;
+    padding: 14px;
+    border-width: 6px;
+  }
+
+  .side {
+    min-height: 260px;
+    padding: 10px;
+  }
+
+  .items {
+    min-height: 190px;
+    padding: 10px;
+    gap: 6px;
+    background: rgba(255,255,255,0.72);
+  }
+
+  .box {
+    width: 120px;
+    height: 80px;
+    margin: 2px;
+  }
+
+  .match {
+    width: 50px;
+    height: 95px;
+    margin: 2px;
+  }
+
+  .equals::before {
+    height: 260px;
+  }
+
+  .value-info {
+    font-size: 13px;
+  }
+
+  .trash {
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .removed-items {
+    gap: 8px;
+  }
+
+  .overlay-box {
+    max-width: 80vw;
+  }
+
+  #studentAnswer,
+  .check-btn {
+    max-width: 220px;
+    font-size: 22px;
+  }
 }
 
+    /* Smartphone */
+@media (max-width: 650px) {
+  body {
+    padding: 10px;
+  }
 
-      
-    }
+  .header {
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-size: 42px;
+  }
+
+  .header-subtitle {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    margin-left: 90px;
+    margin-top: -4px;
+  }
+
+  .app {
+    gap: 12px;
+  }
+
+  .task-switcher {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .task-switcher button {
+    font-size: 13px;
+    padding: 9px 10px;
+    min-width: auto;
+  }
+
+  .question-box {
+    font-size: 15px;
+    padding: 12px;
+    line-height: 1.2;
+  }
+
+  .equation-wrap {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px;
+    border-width: 6px;
+    border-radius: 20px;
+  }
+
+  .equals {
+    min-height: 28px;
+  }
+
+  .equals::before {
+    width: 100%;
+    height: 8px;
+    min-height: 8px;
+    background: #111;
+  }
+
+  .side {
+    min-height: 190px;
+    padding: 8px;
+  }
+
+  .items {
+    min-height: 145px;
+    padding: 8px;
+    gap: 4px;
+    background: rgba(255,255,255,0.72);
+  }
+
+  .box {
+    width: 105px;
+    height: 70px;
+    margin: 2px;
+  }
+
+  .match {
+    width: 42px;
+    height: 80px;
+    margin: 1px;
+  }
+
+  .value-info {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .trash {
+    padding: 12px;
+    font-size: 15px;
+    min-height: 120px;
+  }
+
+  .removed-items {
+    gap: 6px;
+    padding-top: 10px;
+    min-height: 65px;
+  }
+
+  .overlay-box {
+    max-width: 92vw;
+    padding: 22px 16px;
+  }
+
+  #studentAnswer,
+  .check-btn {
+    max-width: 200px;
+    font-size: 20px;
+  }
+}
+    
   </style>
 </head>
 
