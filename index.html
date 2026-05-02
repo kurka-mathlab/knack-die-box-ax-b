@@ -116,8 +116,9 @@
 
     .action-buttons {
   display: flex;
-  gap: 10px;
-  margin-top: 6px;
+  justify-content: center;
+  gap: 12px;
+  margin: 6px 0 10px 0;
 }
 
   button:disabled {
@@ -729,10 +730,7 @@
     <button class="task-btn">Aufgabe 5</button>
   </div>
 
-  <div class="action-buttons">
-    <button class="reset-btn">Zurücksetzen</button>
-    <button class="solution-btn">Lösung prüfen</button>
-  </div>
+ 
 
 </section>
 
@@ -741,6 +739,11 @@
          </section>
 
 
+ <div class="action-buttons">
+    <button class="reset-btn">Zurücksetzen</button>
+    <button class="solution-btn">Lösung prüfen</button>
+  </div>
+    
     <!-- Overlay für die Lösungseingabe -->
     <div id="solutionOverlay" class="overlay hidden" onclick="closeSolutionOverlay()">
   <div class="overlay-box" onclick="event.stopPropagation()">
