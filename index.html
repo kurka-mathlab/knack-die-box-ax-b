@@ -515,6 +515,17 @@
   box-shadow: none;
 }
 
+    .next-task-btn {
+  margin-top: 14px;
+  background: var(--task-active);
+  width: 100%;
+  max-width: 220px;
+}
+
+.next-task-btn.hidden {
+  display: none;
+}
+
     /* Tablet */
    @media (max-width: 850px) {
 
@@ -770,7 +781,9 @@
 
     <button id="checkButton" class="check-btn" onclick="checkStudentAnswer()">Prüfen</button>
 
-    <div id="solutionFeedback"></div>
+    <div id="solutionFeedback"><button id="nextTaskButton" class="next-task-btn hidden" onclick="goToNextTask()">
+  Nächste Aufgabe
+</button></div>
   </div>
 </div>
 <!-- Ende Overlay für die Lösungseingabe -->
@@ -805,6 +818,7 @@
     let removedItems = [];
     let selectedRemovedIndex = null;
     let lastStateEqual = true;
+    let currentTaskNumber = 1;
 
     function calculateBoxValue(t) {
       const boxDifference = t.leftBoxes - t.rightBoxes;
@@ -838,6 +852,7 @@
     return;
   }
 
+  currentTaskNumber = number;
   loadTask(aufgaben[number]);
   markActiveTaskButton(number);
 }
@@ -971,6 +986,7 @@ function markActiveTaskButton(number) {
     }
 
   function openSolutionOverlay() {
+  document.getElementById("nextTaskButton").classList.add("hidden");
   document.getElementById("studentAnswer").value = "";
   document.getElementById("solutionFeedback").textContent = "";
   document.getElementById("solutionFeedback").className = "";
@@ -988,10 +1004,11 @@ function checkStudentAnswer() {
   const button = document.getElementById("checkButton");
 
   if (answer === task.boxValue) {
-    feedback.textContent = "Deine Antwort ist korrekt!";
-    feedback.className = "correct";
-    return;
-  }
+  feedback.textContent = "Antwort ist korrekt!";
+  feedback.className = "correct";
+  document.getElementById("nextTaskButton").classList.remove("hidden");
+  return;
+}
 
   // falsche Antwort
   feedback.textContent = "Deine Antwort stimmt leider nicht! Versuche es nochmal!";
@@ -1013,6 +1030,20 @@ function checkStudentAnswer() {
       button.textContent = "Prüfen";
     }
   }, 1000);
+}
+
+
+  function goToNextTask() {
+  const nextTask = currentTaskNumber + 1;
+
+  if (aufgaben[nextTask]) {
+    closeSolutionOverlay();
+    loadPreset(nextTask);
+  } else {
+    document.getElementById("solutionFeedback").textContent =
+      "Super, du hast alle Aufgaben geschafft!";
+    document.getElementById("nextTaskButton").classList.add("hidden");
+  }
 }
 
     
