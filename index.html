@@ -363,13 +363,23 @@
     .trash-title { margin-bottom: 4px; }
 
     .return-hint {
-      margin-top: 8px;
-      color: var(--accent);
-      font-size: 16px;
-      display: none;
-    }
+  margin-top: 10px;
 
-    .return-hint.visible { display: block; }
+  font-size: 16px;
+  font-weight: bold;
+
+  color: #5e241c; /* gleiche Farbe wie Überschrift */
+
+  background: rgba(94, 36, 28, 0.08);
+  padding: 8px 12px;
+  border-radius: 10px;
+
+  display: none;
+}
+
+    .return-hint.visible {
+  display: block;
+}
 
     .removed-items {
       margin-top: 14px;
